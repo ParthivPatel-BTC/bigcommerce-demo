@@ -1,0 +1,33 @@
+postgre_common_config: &postgre_common_config
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: postgres # if using default PostgreSQL user then the value should be: postgres
+  password: postgres
+  host: localhost # If the DB is setup on local machine then use: localhost
+
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+# default: &default
+#   adapter: sqlite3
+#   pool: 5
+#   timeout: 5000
+
+development:
+  database: bg_dev
+  <<: *postgre_common_config
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+# test:
+#   <<: *default
+#   database: db/test.sqlite3
+
+# production:
+#   <<: *default
+#   database: db/production.sqlite3

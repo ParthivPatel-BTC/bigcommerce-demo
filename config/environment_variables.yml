@@ -1,0 +1,10 @@
+development:
+  BC_CLIENT_ID: "g9474ey0bans1bou6knaakxlf3xdqb4"
+  BC_CLIENT_SECRET: "4n7fdidvdrzvwe5hb0i4blohf4d8crc"
+  APPLICATION_URL: "https://store-2taci904l7.mybigcommerce.com/manage/app/11054"
+  BC_API_ENDPOINT: ""
+production:
+  BC_CLIENT_ID: "g9474ey0bans1bou6knaakxlf3xdqb4"
+  BC_CLIENT_SECRET: "4n7fdidvdrzvwe5hb0i4blohf4d8crc"
+  APPLICATION_URL: "https://store-2taci904l7.mybigcommerce.com/manage/app/11054"
+  BC_API_ENDPOINT: ""
