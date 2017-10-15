@@ -1,7 +1,11 @@
 <% email ||= '' %>
 <% if email.present? %>
-	<h1>Welcome, <%= email %>!</h1>
-	<h3>App installed.</h3>
+  <div class="container">
+    <div class="mt-1">
+      <h1>Welcome, <%= email %>!</h1>
+    </div>
+    <p class="lead">Your application has been installed.</p>
+  </div>
 <% else %>
   <h2>Please login to <%= link_to('bigcommerce', 'https://login.bigcommerce.com/login') %>, then create new app and install it.</h2>
 <% end %>
