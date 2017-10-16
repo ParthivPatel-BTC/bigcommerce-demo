@@ -1,10 +1,12 @@
-<% email ||= '' %>
-<% if email.present? %>
+<% store_info ||= '' %>
+<% if store_info.present? %>
   <div class="container">
-    <div class="mt-1">
-      <h1>Welcome, <%= email %>!</h1>
+    <div class="mt-3">
+      <h1>Store Info</h1>
     </div>
-    <p class="lead">Your application has been installed.</p>
+    <p class="lead">
+      <%= render partial: 'home/store_info', locals: { store_info: store_info } %>
+    </p>
   </div>
 <% else %>
   <h2>Please login to <%= link_to('bigcommerce', 'https://login.bigcommerce.com/login') %>, then create new app and install it.</h2>

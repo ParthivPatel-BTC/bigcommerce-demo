@@ -25,7 +25,8 @@ class OmniauthsController < ApplicationController
       store = Store.create(store_hash: store_hash, access_token: token, scope: scope, email: email, username: name)
       session[:store_id] = store.id
     end
-    render 'home/index', locals: { email: email }, status: 200
+    store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
+    render 'home/index', locals: { store_info: store_info }, status: 200
 
   end
 
@@ -38,7 +39,6 @@ class OmniauthsController < ApplicationController
   end
 
   def load
-    
     payload = parse_signed_payload
     @payload = payload
     return render_error('[load] Invalid payload signature!') unless payload
@@ -51,8 +51,8 @@ class OmniauthsController < ApplicationController
     return render_error("[load] Store not found!") unless @store
 
     logger.info "[load] Loading app for user '#{@email}' on store '#{store_hash}'"
-    session[:store_id] = @store.id
-    render 'home/index', status: 200
+    store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
+    render 'home/index', locals: { store_info: store_info }, status: 200
   end
 
   private
