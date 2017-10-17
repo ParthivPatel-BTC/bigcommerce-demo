@@ -23,10 +23,8 @@ class OmniauthsController < ApplicationController
     else
       logger.info "[install] Installing app for store '#{store_hash}' with admin '#{email}'"
       store = Store.create(store_hash: store_hash, access_token: token, scope: scope, email: email, username: name)
-      # session[:store_id] = store.id
     end
-    store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
-    render 'home/index', locals: { store_info: store_info }, status: 200
+    render 'home/index', locals: { store_info: current_store_info(store) }, status: 200
 
   end
 
@@ -51,8 +49,7 @@ class OmniauthsController < ApplicationController
     return render_error("[load] Store not found!") unless @store
 
     logger.info "[load] Loading app for user '#{@email}' on store '#{store_hash}'"
-    store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
-    render 'home/index', locals: { store_info: store_info }, status: 200
+    render 'home/index', locals: { store_info: current_store_info(@store) }, status: 200
   end
 
   private
@@ -76,19 +73,6 @@ class OmniauthsController < ApplicationController
     OpenSSL::HMAC::hexdigest('sha256', secret, payload)
   end
 
-  # def secure_compare(a, b)
-  #   return false if a.blank? || b.blank? || a.bytesize != b.bytesize
-  #   l = a.unpack "C#{a.bytesize}"
-
-  #   res = 0
-  #   b.each_byte { |byte| res |= byte ^ l.shift }
-  #   res == er_error(e)
-  #   logger.warn "ERROR: #{e}"
-  #   @error = e
-
-  #   raise e
-  # end
-
   def bc_client_id
     ENV['BC_CLIENT_ID']
   end
@@ -98,7 +82,7 @@ class OmniauthsController < ApplicationController
     ENV['BC_CLIENT_SECRET']
   end
 
-# Get the API url from env
+  # Get the API url from env
   def bc_api_url
     ENV['BC_API_ENDPOINT'] || 'https://api.bigcommerce.com'
   end

@@ -10,19 +10,9 @@ class ApplicationController < ActionController::Base
     response.headers.delete "X-Frame-Options"
   end
 
-  def current_store
-    if params['producer'].present?
-      store_hash = params['producer'].split('/').last
-      @current_store ||= Store.find_by(store_hash: store_hash)
-      session[:store_id] = @current_store.id
-    else
-      @current_store ||= Store.first
-    end
-    @current_store
-  end
-
-  def current_connection
-    @connection = Bigcommerce::Connection.build(Bigcommerce::Config.new(store_hash: current_store.store_hash, client_id: ENV['BC_CLIENT_ID'], access_token: current_store.access_token))
+  def current_store_info(store)
+    connection = Bigcommerce::Connection.build(Bigcommerce::Config.new(store_hash: store.store_hash , client_id: ENV['BC_CLIENT_ID'], access_token: store.access_token))
+    JSON.parse(connection.get("/stores/#{store_hash}/v2/store").body)
   end
 
 end
