@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
       @current_store ||= Store.find_by(store_hash: store_hash)
       session[:store_id] = @current_store.id
     else
-      @current_store ||= Store.find(session[:store_id])
+      @current_store ||= Store.first
     end
     @current_store
   end
