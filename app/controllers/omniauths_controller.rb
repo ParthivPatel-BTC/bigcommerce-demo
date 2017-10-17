@@ -51,7 +51,7 @@ class OmniauthsController < ApplicationController
     return render_error("[load] Store not found!") unless @store
 
     logger.info "[load] Loading app for user '#{@email}' on store '#{store_hash}'"
-    store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
+    store_info = JSON.parse(current_connection.get("/stores/#{@store}/v2/store").body)
     render 'home/index', locals: { store_info: store_info }, status: 200
   end
 
