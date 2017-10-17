@@ -23,7 +23,7 @@ class OmniauthsController < ApplicationController
     else
       logger.info "[install] Installing app for store '#{store_hash}' with admin '#{email}'"
       store = Store.create(store_hash: store_hash, access_token: token, scope: scope, email: email, username: name)
-      session[:store_id] = store.id
+      # session[:store_id] = store.id
     end
     store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
     render 'home/index', locals: { store_info: store_info }, status: 200
@@ -51,7 +51,7 @@ class OmniauthsController < ApplicationController
     return render_error("[load] Store not found!") unless @store
 
     logger.info "[load] Loading app for user '#{@email}' on store '#{store_hash}'"
-    store_info = JSON.parse(current_connection.get("/stores/#{@store}/v2/store").body)
+    store_info = JSON.parse(current_connection.get("/stores/#{store_hash}/v2/store").body)
     render 'home/index', locals: { store_info: store_info }, status: 200
   end
 
