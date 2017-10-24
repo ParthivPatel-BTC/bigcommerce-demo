@@ -2,11 +2,11 @@ class OmniauthsController < ApplicationController
 
   def callback
     auth = request.env['omniauth.auth']
-    
+
     unless auth && auth[:extra][:raw_info][:context]
       return render_error("[install] Invalid credentials: #{JSON.pretty_generate(auth[:extra])}")
     end
-    
+
     app_url  = ENV['APPLICATION_URL']
     email = auth[:info][:email]
     name = auth[:info][:name]
@@ -16,7 +16,7 @@ class OmniauthsController < ApplicationController
 
     # Lookup store
     store = Store.where(store_hash: store_hash).first
-    
+
     if store
       logger.info "[install] Updating token for store '#{store_hash}' with scope '#{scope}'"
       store.update(access_token: token, scope: scope)
@@ -43,7 +43,7 @@ class OmniauthsController < ApplicationController
 
     @email = payload['user']['email']
     store_hash = payload['store_hash']
-    
+
     # Lookup store
     @store = Store.find_by(store_hash: store_hash)
     return render_error("[load] Store not found!") unless @store
@@ -65,11 +65,12 @@ class OmniauthsController < ApplicationController
     if secure_compare(expected_signature, provided_signature)
       return JSON.parse(payload)
     end
-    
+
     nil
   end
 
   def sign_payload(secret, payload)
+    @abc = OpenSSL::HMAC::hexdigest('sha256', secret, payload)
     OpenSSL::HMAC::hexdigest('sha256', secret, payload)
   end
 
